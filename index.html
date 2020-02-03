@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoLite</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <script  defer src="assets/js/vue.js"></script>
+    <script  defer src="assets/js/main.js"></script>
+</head>
+<body>
+<div id="app">
+    <create class="create" @create="createNote" init="Новый блокнот"></create>
+    <note v-for="note in notes"
+          @remove="removeNote"
+          @edit-note="editNote"
+          @remove-todo="removeTodo"
+          @create-todo="createTodo"
+          :note="note"
+          :key="note.id"
+          class="note">
+    </note>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+#app {
+    width: 50%;
+    background-color:aliceblue;
+    margin: 0 auto;
+}
+.create {
+    display: flex;
+}
+.create>input {
+    flex: auto;
+}
+.note {
+    margin: 5px;
+    background-color:wheat;
+}
+.active {
+   text-decoration: line-through;
+}
