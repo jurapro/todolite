@@ -17,7 +17,10 @@ Vue.component('create', {
 
 Vue.component('todo', {
     props: ['todo'],
-    template: `<p> <label :class="{active:todo.active}">
+    updated() {
+        this.$emit('save-storage');
+    },
+    template: `<p><label :class="{active:todo.active}">
                 <input type="checkbox" value="" v-model="todo.active">{{todo.name}}</label>
                 <button @click="$emit('remove',todo)">-</button></p>`,
 });
@@ -30,7 +33,13 @@ Vue.component('note', {
             name: this.note.name
         }
     },
+    updated() {
+        this.saveStorage();
+    },
     methods: {
+        saveStorage() {
+            this.$emit('save-storage');
+        },
         createTodo(name) {
             this.$emit('create-todo', {
                 name: name,
@@ -57,7 +66,7 @@ Vue.component('note', {
     <input type="text"  v-model="name" @keyup.enter="editNote">
     </template> 
       
-    <todo v-for="todo in note.todos" :todo="todo" :key="todo.id" @remove="removeTodo"></todo>
+    <todo v-for="todo in note.todos" :todo="todo" :key="todo.id" @remove="removeTodo" @save-storage="saveStorage"></todo>
     <create class="create" @create="createTodo" init="Новое дело"></create>
     </div>`,
 });
@@ -67,7 +76,16 @@ let vm = new Vue({
     data: {
         notes: [],
     },
+    updated() {
+        this.saveStorage();
+    },
+    mounted(){
+        this.notes = JSON.parse(localStorage.getItem('notes')) || [];
+    },
     methods: {
+        saveStorage() {
+            localStorage.setItem('notes', JSON.stringify(this.notes));
+        },
         createNote(name) {
             this.notes.push({
                 name: name,
@@ -81,7 +99,6 @@ let vm = new Vue({
         },
 
         editNote(note, name) {
-            //Vue.set(this.notes, this.notes.indexOf(note),)
             note.name = name;
         },
 
